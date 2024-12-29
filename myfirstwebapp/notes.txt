@@ -27,3 +27,20 @@ B2: Executes Controller method           --->    1)goToLoginPage method Puts dat
 B3: Identifies correct View              --->    Dispatcher Servlet identifies correct View(login.jsp) with ViewResolver(/WEB-INF/jsp/login.jsp => View Resolver)
 B4: Executes view                        --->    Executes View(login.jsp)
 
+
+
+## Todo
+
+id
+username
+description
+targetDate
+done
+
+
+
+
+
+
+
+
