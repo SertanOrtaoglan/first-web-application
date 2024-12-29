@@ -1,70 +1,49 @@
 package com.in28minutes.springboot.myfirstwebapp.login;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class LoginController {
 	
-	/*(120-122 arası yaptıklarımız)
+	//Authentication işlemi yapacağız. "name:in28minutes password: dummy" girilirse giriş sayfasına girmesine izin vereceğiz. Aksi taktirde login sayfasına geri yönlendireceğiz. Bunun işlem için "AuthenticationService" adında yeni bir class oluşturup gerekli methodları yazıp buraya enjekte ederiz.
+	private AuthenticationService authenticationService;
 	
-	// /login(url) => com.in28minutes.springboot.myfirstwebapp.login.LoginController => login.jsp
 	
-	//http://localhost:8084/login?name=Ranga   (name'in değerini Url'den alıp @RequestParam ile buradaki methodumuza gönderilmesini sağlarız.)
-	//Kontrolörümüzden(LoginController) JSP'mize(login.jsp) herhangi bir şey aktarmak istiyorsak(örneğimizdeki 'name' gibi) bu işlemi 'Model' kullanarak yapmamız gerekir. Bunun için 'ModalMap'ten yararlanacağız.
-	//Yani controller'da, view(login.jsp) için herhangi bir şeyi kullanılabilir hale getirmek istiyorsak, bunu model'e koymamız gerekir.
-	@RequestMapping("login")
-	public String goToLoginPage(@RequestParam String name, ModelMap model) {
-		model.put("name", name);    //'model'in içerisine adı 'name' olan ve değeri de 'name' olan bir 'attribute(özellik)' koymuş olduk.
-		System.out.println("Request param is " + name);    //NOT RECOMMENDED FOR PRODUCTION CODE! (Çıktı console'a yazdırılır.)
-		return "login";
+	public LoginController(AuthenticationService authenticationService) {
+		super();
+		this.authenticationService = authenticationService;
 	}
-	*/
+
 	
-	
-	/* Loglama yapma(123-step09)
-	private Logger logger = LoggerFactory.getLogger(getClass());
-	
-	@RequestMapping("login")
-	public String goToLoginPage(@RequestParam String name, ModelMap model) {
-		model.put("name", name);    
-		
-		//Application properties'te ayarladığımız logging level'a göre buradaki seviyelerden(debug,info,warn) birinin kodu çalışır.
-		logger.debug("Request param is {}", name);           //'Debug' seviyesinde loglama yapar. Seviyeyi application properties'te belirleriz.(logging.level.com.in28minutes.springboot.myfirstwebapp = debug) Seviyeyi 'debug' yaparsak 'debug', 'info' ve 'warn' yani hepsi çalışır.
-		logger.info("I want this printed at info level");    //'Info' seviyesinde loglama yapar. (logging.level.com.in28minutes.springboot.myfirstwebapp = info) Seviyeyi 'info' yaparsak 'info' ve 'warn' çalışır.
-		logger.warn("I want this printed at warn level");    //'Warn' seviyesinde loglama yapar. (logging.level.com.in28minutes.springboot.myfirstwebapp = warn) Seviyeyi 'warn' yaparsak sadece 'warn' çalışır.
-		System.out.println("Request param is " + name);      //NOT RECOMMENDED FOR PRODUCTION CODE! (Çıktı console'a yazdırılır.)
-		
-		return "login";
-	}
-	*/
-	
-	
-	/*
-	//Gereksiz satırları kaldırıp kodumuzu yeniden düzenlersek;
-	@RequestMapping("login")
-	public String goToLoginPage(@RequestParam String name, ModelMap model) {
-		model.put("name", name);
-		return "login";
-	}
-	*/
-	
-	
-	//Login form oluşturma(125-step11)
-	@RequestMapping("login")
+	//login
+	//Şu an bu methodumuz "GET ve POST" isteklerini karşılıyor.[@RequestMapping("login") => GET,POST] Bu methodun sadece "GET" isteklerini karşılamasını istiyoruz. Bunun için annotation'ı "@RequestMapping(value = "login", method = RequestMethod.GET)" şeklinde yazarız. Böylelikle bu method sadece "GET" isteklerini karşılayacaktır.
+	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public String goToLoginPage() {
 		return "login";
 	}
 	
+	//login?name=Ranga(RequestParam) ==> Sorgu parametrelerini(?name=Ranga) ve form datalarını "RequestParam" annotation'ı ile yakalayabiliriz.
+ 	@RequestMapping(value = "login", method = RequestMethod.POST)
+	public String goToWelcomePage(@RequestParam String name, @RequestParam String password, ModelMap model) {    //Form'a girilen name ve password'ü RequestParam ile yakalayıp ardından 'model' içerisine eklemek ve JSP'de göstermek istiyoruz.
+ 		
+ 		//Authentication işlemini uygularsak;
+ 		if(authenticationService.authenticated(name, password)) {
+ 			model.put("name", name);
+ 	 		
+ 	 		return "welcome";
+ 		}
+ 	
+ 		model.put("errorMessage", "Invalid Credentials! Please try again.");
+ 		return "login";
+	}
 	
+ 	
 	
-	
-	
-	
-	
-	
-	
-	
-
+ 	
+ 	
 }
 
