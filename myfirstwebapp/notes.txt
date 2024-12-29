@@ -1,0 +1,29 @@
+## HTML
+<html>
+	<head>
+		<title> My first HTML Page </title>
+	</head>
+	<body>
+		My first html page with body
+	</body>
+</html>
+
+
+## JSP 
+/src/main/resources/META-INF/resources/WEB-INF/jsp/sayHello.jsp
+
+/say-hello-jsp(url) => sayHelloController - sayHelloJsp method => sayHello
+/WEB-INF/jsp/sayHello.jsp
+
+
+## Login JSP
+/login(url) => com.in28minutes.springboot.myfirstwebapp.login.LoginController => login.jsp
+ 
+ 
+## Dispatcher Servlet'in çalışma prensibi
+localhost:8084/login (Bu Url'den istek attığımızı düşünelim)
+B1: Identifies correct Controller method --->    /login => LoginController.goToLoginPage   
+B2: Executes Controller method           --->    1)goToLoginPage method Puts data into Model  2)Then returns View name(login)
+B3: Identifies correct View              --->    Dispatcher Servlet identifies correct View(login.jsp) with ViewResolver(/WEB-INF/jsp/login.jsp => View Resolver)
+B4: Executes view                        --->    Executes View(login.jsp)
+
