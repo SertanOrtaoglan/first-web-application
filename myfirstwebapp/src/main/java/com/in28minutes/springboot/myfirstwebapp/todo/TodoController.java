@@ -1,11 +1,13 @@
 package com.in28minutes.springboot.myfirstwebapp.todo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 
@@ -31,6 +33,7 @@ public class TodoController {
 	} 
 	
 	
+	//GET,POST(for 'add-todo' url)
 	//Url: /add-todo
 		@RequestMapping(value="add-todo", method = RequestMethod.GET)
 		public String showNewTodoPage() {
@@ -40,14 +43,15 @@ public class TodoController {
 	
 	//Url: /add-todo
 		@RequestMapping(value="add-todo", method = RequestMethod.POST)
-		public String addNewTodo() {
-			//add new todo logic can write in here
+		public String addNewTodo(@RequestParam String description, ModelMap model) {
 			
-			//return "listTodos";         //Bu şekilde yazarsak direkt olarak listTodos.jsp'ye(view'e) yönlendirmiş oluruz. Bunu istemiyoruz. Bunun yerine alt satırdaki gibi yazarak('redirect' ile) direkt olarak bu view'in(listTodos.jsp) URL'ine("list-todos") yönlendirmemiz gerekir.
+			String username = (String)model.get("name");   //'model' kullanarak login olan kullanıcının name'ini alıyoruz. Ve String dönüşümü yaparak aşağıda parametre olarak geçiyoruz.
+			todoService.addTodo(username, description, LocalDate.now().plusYears(1), false);
+			
 			return "redirect:list-todos";
 		}
 		
-	
+		
 		
 		
 		
