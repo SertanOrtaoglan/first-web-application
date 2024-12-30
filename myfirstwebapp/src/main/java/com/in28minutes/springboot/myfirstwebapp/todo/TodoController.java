@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 
@@ -30,10 +31,27 @@ public class TodoController {
 	} 
 	
 	
+	//Url: /add-todo
+		@RequestMapping(value="add-todo", method = RequestMethod.GET)
+		public String showNewTodoPage() {
+			return "todo";
+		}
 	
 	
+	//Url: /add-todo
+		@RequestMapping(value="add-todo", method = RequestMethod.POST)
+		public String addNewTodo() {
+			//add new todo logic can write in here
+			
+			//return "listTodos";         //Bu şekilde yazarsak direkt olarak listTodos.jsp'ye(view'e) yönlendirmiş oluruz. Bunu istemiyoruz. Bunun yerine alt satırdaki gibi yazarak('redirect' ile) direkt olarak bu view'in(listTodos.jsp) URL'ine("list-todos") yönlendirmemiz gerekir.
+			return "redirect:list-todos";
+		}
+		
 	
-	
-	
-	
+		
+		
+		
+		
+		
+
 }
