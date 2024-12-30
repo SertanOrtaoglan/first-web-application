@@ -45,11 +45,10 @@ listTodos.jsp
 ## Request vs Model vs Session
 
 
-
-
-
-
-
+NOT: JSP içerisinde kullanırken sağda yazdığımız şekilde kullanırız.
+/META-INF/resources/webjars/bootstrap/5.3.3/css/bootstrap.min.css  ==>  webjars/bootstrap/5.3.3/css/bootstrap.min.css (link)
+/META-INF/resources/webjars/bootstrap/5.3.3/js/bootstrap.min.js    ==>  webjars/bootstrap/5.3.3/js/bootstrap.min.js   (script)
+/META-INF/resources/webjars/jquery/3.7.1/jquery.min.js			   ==>  webjars/jquery/3.7.1/jquery.min.js            (script)
 
 
 
