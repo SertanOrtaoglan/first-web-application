@@ -50,7 +50,7 @@ public class TodoController {
 
 	
 	//Url: /add-todo
-	//Form'dan Bean(Todo)'e bağlama işlemi bu methodla gerçekleşir.((İki yönlü bağlamadan ikincisi)
+	//Form'dan Bean(Todo)'e bağlama işlemi bu methodla gerçekleşir.(İki yönlü bağlamadan ikincisi)
 	@RequestMapping(value="add-todo", method = RequestMethod.POST)
 	public String addNewTodo(ModelMap model, @Valid Todo todo, BindingResult result) {
 		
@@ -78,7 +78,7 @@ public class TodoController {
 	
 		
 	//Url: /update-todo
-		@RequestMapping("update-todo")
+		@RequestMapping(value="update-todo", method = RequestMethod.GET)
 		public String showUpdateTodoPage(@RequestParam int id, ModelMap model) {
 			
 			Todo todo = todoService.findById(id);
@@ -86,9 +86,25 @@ public class TodoController {
 					
 			return "todo";
 		}
-		
-		
-		
+	
+	
+	//Url: /add-todo
+	@RequestMapping(value="update-todo", method = RequestMethod.POST)
+	public String updateTodo(ModelMap model, @Valid Todo todo, BindingResult result) {
+			
+		if(result.hasErrors()) {
+			return "todo";
+				
+		}
+				
+		String username = (String)model.get("name");
+		todo.setUsername(username);    //username'i gizli(hidden) bir değişken olarak koymak istemiyoruz. Bu yüzden model'den username'i alıp, 'todo'ya set ederiz.
+		todoService.updateTodo(todo);
+				
+		return "redirect:list-todos";
+	}
+	
+	
 	
 	
 }
