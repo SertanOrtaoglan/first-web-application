@@ -2,6 +2,8 @@ package com.in28minutes.springboot.myfirstwebapp.todo;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.Size;
+
 //Database(MySQL) 
 //Biz ilk olarak 'static' bir 'List of Todos' oluşturacağız daha sonra gerçek bir veritabanı kullanımına geçeceğiz.
 //Static List of todos => Database(H2, MySQL)
@@ -11,10 +13,14 @@ public class Todo {
 
 	private int id;
 	private String username;
+	
+	@Size(min=10, message="Enter atleast 10 characters") 
 	private String description;
+	
 	private LocalDate targetDate;
 	private boolean done;
 
+	
 	public Todo(int id, String username, String description, LocalDate targetDate, boolean done) {
 		super();
 		this.id = id;
