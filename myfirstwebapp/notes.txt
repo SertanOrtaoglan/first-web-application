@@ -51,7 +51,9 @@ NOT: JSP içerisinde kullanırken sağda yazdığımız şekilde kullanırız.
 /META-INF/resources/webjars/jquery/3.7.1/jquery.min.js			   ==>  webjars/jquery/3.7.1/jquery.min.js            (script)
 
 
-
+Bootstrap Datepicker için;
+/META-INF/resources/webjars/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js                  ==>  webjars/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js  (script)
+/META-INF/resources/webjars/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.standalone.min.css     ==>  webjars/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.standalone.min.css  (link)
 
 
 
