@@ -64,7 +64,7 @@ public class TodoController {
 			
 		return "redirect:list-todos";
 	}
-
+	
 	
 	//Url: /delete-todo
 		@RequestMapping("delete-todo")
@@ -76,6 +76,18 @@ public class TodoController {
 		}
 	
 	
+		
+	//Url: /update-todo
+		@RequestMapping("update-todo")
+		public String showUpdateTodoPage(@RequestParam int id, ModelMap model) {
+			
+			Todo todo = todoService.findById(id);
+			model.addAttribute("todo", todo);      //Burada tırnak içinde yazılan "todo" ifadesi todo.jsp içerindeki modelAttribute="todo" dan gelir. Yani ikisi birbiriyle eşleşiyor.
+					
+			return "todo";
+		}
+		
+		
 		
 	
 	
