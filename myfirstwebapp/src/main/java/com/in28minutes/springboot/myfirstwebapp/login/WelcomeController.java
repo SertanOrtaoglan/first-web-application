@@ -1,5 +1,7 @@
 package com.in28minutes.springboot.myfirstwebapp.login;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,11 +14,18 @@ public class WelcomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String goToWelcomePage(ModelMap model) {
-		model.put("name", "in28minutes");   //Şimdilik sabit kodlanmış bir isim(in28minutes) gönderiyoruz. İlerleyen bölümlerde bunu düzelteceğiz.
+		model.put("name", getLoggedinUsername());   //Artık username'i sabit olarak yazıp kullanmak yerine SecurityContextHolder'dan alarak kullanacağız.(Yani aşağıda oluşturduğumuz 'getLoggedinUsername()' adlı yöntemi kullanırız.)
 		return "welcome";
+	}
+	
+	
+	private String getLoggedinUsername() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return authentication.getName();
 	}
 	
 	
 	
  	
 }
+
