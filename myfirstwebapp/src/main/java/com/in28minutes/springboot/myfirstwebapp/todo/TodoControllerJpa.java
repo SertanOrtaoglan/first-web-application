@@ -20,12 +20,11 @@ import jakarta.validation.Valid;
 @SessionAttributes("name")
 public class TodoControllerJpa {
 
-	private TodoService todoService;
+	//private TodoService todoService;
 	private TodoRepository todoRepository;   //'todoRepository'i kullanarak H2 veritabanına bağlanacağız ve dilediğimiz işlemi veritabanı üzerinden gerçekleştireceğiz.(Yani artık statik bir listeye bağlı olmayacağız.)
 	
-	public TodoControllerJpa(TodoService todoService, TodoRepository todoRepository) {
+	public TodoControllerJpa(TodoRepository todoRepository) {
 		super();
-		this.todoService = todoService;
 		this.todoRepository = todoRepository;
 	}
 
@@ -73,31 +72,36 @@ public class TodoControllerJpa {
 		}
 			
 		String username = getLoggedInUsername(model);
-		todoService.addTodo(username, todo.getDescription(), todo.getTargetDate(), false);
+		todo.setUsername(username);   //Böylelikle login form'dan gelen username'i, 'Todo' bean'imize set edip değeri ordan almış oluruz. Sonuç olarak gelen tüm değerleri(username,description,targetDate,done) 'Todo' bean'e ayarlıyoruz. Bunun sebebi ise 'todoRepository'nin gelen tüm attribute'lerin(username,description,targetDate,done) hepsini aynı anda alacak herhangi bir method'unun olmamasından kaynaklıdır. (Yani JPA'da tüm değerleri girdi olarak alan bir method yoktur!)
+		todoRepository.save(todo);    //'todoRepository'deki 'save(S entity)' methodu yani 'kaydetme methodu' girdi olarak 'todo' nesnesini kabul edecektir. Biz de zaten bu method'umuzda girdi olarak kullanıcıdan 'Todo todo'(entity) aldığımız için(yani kullanıcı ekleme yaparken girilen tüm değerler direkt olarak 'Todo' bean'den alınıyor) ekleme işlemi başarıyla gerçekleşecektir.
+		
+		//todoService.addTodo(username, todo.getDescription(), todo.getTargetDate(), todo.isDone()); 
 			
 		return "redirect:list-todos";
 	}
-	
+
 	
 	//Url: /delete-todo
-		@RequestMapping("delete-todo")
-		public String deleteTodo(@RequestParam int id) {
+	@RequestMapping("delete-todo")
+	public String deleteTodo(@RequestParam int id) {
 			
-			todoService.deleteById(id);
-			return "redirect:list-todos";
-		}
-	
+		todoRepository.deleteById(id);
+		//todoService.deleteById(id);
+		return "redirect:list-todos";
+	}
+
 	
 	//Url: /update-todo
-		@RequestMapping(value="update-todo", method = RequestMethod.GET)
-		public String showUpdateTodoPage(@RequestParam int id, ModelMap model) {
+	@RequestMapping(value="update-todo", method = RequestMethod.GET)
+	public String showUpdateTodoPage(@RequestParam int id, ModelMap model) {
 			
-			Todo todo = todoService.findById(id);
-			model.addAttribute("todo", todo);      //Burada tırnak içinde yazılan "todo" ifadesi todo.jsp içerindeki modelAttribute="todo" dan gelir. Yani ikisi birbiriyle eşleşiyor.
+		//Todo todo = todoService.findById(id);
+		Todo todo = todoRepository.findById(id).get();
+		model.addAttribute("todo", todo);      //Burada tırnak içinde yazılan "todo" ifadesi todo.jsp içerindeki modelAttribute="todo" dan gelir. Yani ikisi birbiriyle eşleşiyor.
 					
-			return "todo";
-		}
-	
+		return "todo";
+	}
+
 	
 	//Url: /update-todo
 	@RequestMapping(value="update-todo", method = RequestMethod.POST)
@@ -110,7 +114,9 @@ public class TodoControllerJpa {
 				
 		String username = getLoggedInUsername(model);
 		todo.setUsername(username);     //username'i gizli(hidden) bir değişken olarak koymak istemiyoruz. Bu yüzden SecurityContextHolder'dan username'i alıp, 'todo'ya set ederiz.
-		todoService.updateTodo(todo);
+		todoRepository.save(todo);
+		
+		//todoService.updateTodo(todo);
 				
 		return "redirect:list-todos";
 	}
