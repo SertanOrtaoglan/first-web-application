@@ -50,7 +50,7 @@ public class SpringSecurityConfiguration {
 		return new BCryptPasswordEncoder();
 	}
 	
-	//Configuring Spring Security to get H2 console Working
+	//Configuring Spring Security to get H2-console Working
 	
 	//Spring Security default olarak 2 özellik sağlar.(Biz bunları dilersek yapılandırıp değiştirebiliriz.) Bu 2 özelliği sağlayan şey "SecurityFilterChain"dir.
 	//1- All URLs are protected (by default)
@@ -70,7 +70,7 @@ public class SpringSecurityConfiguration {
 		
 		http.csrf(csrf -> csrf.disable());   //CSRF'i devre dışı bırakıyoruz.(Madde 3)
 		
-		http.headers(header -> header.frameOptions(frameOptions -> frameOptions.disable()));   //Uygulamamızda 'frame' kullanımını etkinleştiriyoruz.
+		http.headers(header -> header.frameOptions(frameOptions -> frameOptions.disable()));   //Uygulamamızda 'frame' kullanımını etkinleştiriyoruz.(Madde 4)
 		
 		
 		return http.build();  
