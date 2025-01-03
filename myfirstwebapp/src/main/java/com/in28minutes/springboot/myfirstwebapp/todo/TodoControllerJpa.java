@@ -16,15 +16,17 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import jakarta.validation.Valid;
 
 
-//@Controller
+@Controller
 @SessionAttributes("name")
-public class TodoController {
+public class TodoControllerJpa {
 
 	private TodoService todoService;
+	private TodoRepository todoRepository;   //'todoRepository'i kullanarak H2 veritabanına bağlanacağız ve dilediğimiz işlemi veritabanı üzerinden gerçekleştireceğiz.(Yani artık statik bir listeye bağlı olmayacağız.)
 	
-	public TodoController(TodoService todoService) {
+	public TodoControllerJpa(TodoService todoService, TodoRepository todoRepository) {
 		super();
 		this.todoService = todoService;
+		this.todoRepository = todoRepository;
 	}
 
 	
@@ -39,13 +41,14 @@ public class TodoController {
 	@RequestMapping("list-todos")
 	public String listAllTodos(ModelMap model) {
 		String username = getLoggedInUsername(model);
-		List<Todo> todos = todoService.findByUsername(username);    //Burada daha önceden sabit bir şekilde yazarak verdiğimiz username'i[findByUsername("in28minutes") şeklinde] artık SecurityContextHolder'dan(yani login olurken girilen username'i) alıp verebiliriz. Bunun için yukarıda ' getLoggedInUsername()' adında bir yöntem oluşturduk. 
+		
+		List<Todo> todos = todoRepository.findByUsername(username);    //Burada daha önceden sabit bir şekilde yazarak verdiğimiz username'i[findByUsername("in28minutes") şeklinde] artık SecurityContextHolder'dan(yani login olurken girilen username'i) alıp verebiliriz. Bunun için yukarıda ' getLoggedInUsername()' adında bir yöntem oluşturduk. 
 		model.addAttribute("todos", todos);
 		
 		return "listTodos";
 	}
 
-	
+
 	//GET,POST(for 'add-todo' url)
 	//Url: /add-todo
 	//Bean'den(Todo) form'a bağlama işlemi bu methodla gerçekleşir.(İki yönlü bağlamadan birincisi)
